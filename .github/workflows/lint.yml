@@ -24,4 +24,6 @@ jobs:
           runtime: node@24.x
           cache: true
           version: 12
+          install: false
+      - run: pnpm install
       - run: pnpm lint
