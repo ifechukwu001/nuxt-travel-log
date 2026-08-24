@@ -1,6 +1,4 @@
 import { drizzle } from "drizzle-orm/libsql";
-
-import env from "~~/server/utils/env";
 import { relations } from "./relations";
 
 const db = drizzle({

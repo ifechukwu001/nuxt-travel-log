@@ -8,10 +8,7 @@
         <p class="py-6">
           Keep track of your travels and adventures with this simple travel log app. Add location, photos, and notes to create a digital journalof your journeys.
         </p>
-        <button class="btn btn-accent">
-          Sign In with Github
-          <Icon name="tabler:brand-github" size="24" />
-        </button>
+        <AuthButton />
       </div>
     </div>
   </div>
