@@ -1,6 +1,5 @@
 import {
   index,
-  int,
   integer,
   snakeCase,
   text,
@@ -8,32 +7,28 @@ import {
 } from "drizzle-orm/sqlite-core";
 
 export const user = snakeCase.table("user", {
-  id: int().primaryKey({ autoIncrement: true }),
+  id: integer().primaryKey({ autoIncrement: true }),
   name: text().notNull(),
   email: text().notNull().unique(),
   emailVerified: integer({ mode: "boolean" })
     .default(false)
     .notNull(),
   image: text(),
-  createdAt: integer()
-
-    .notNull(),
-  updatedAt: integer()
-
-    .notNull(),
+  createdAt: integer().notNull(),
+  updatedAt: integer().notNull(),
 });
 
 export const session = snakeCase.table(
   "session",
   {
-    id: int().primaryKey({ autoIncrement: true }),
+    id: integer().primaryKey({ autoIncrement: true }),
     expiresAt: integer().notNull(),
     token: text().notNull().unique(),
     createdAt: integer().notNull(),
     updatedAt: integer().notNull(),
     ipAddress: text(),
     userAgent: text(),
-    userId: text()
+    userId: integer()
       .notNull()
       .references(() => user.id, { onDelete: "cascade" }),
   },
@@ -43,11 +38,11 @@ export const session = snakeCase.table(
 export const account = snakeCase.table(
   "account",
   {
-    id: int().primaryKey({ autoIncrement: true }),
+    id: integer().primaryKey({ autoIncrement: true }),
     issuer: text().notNull(),
     accountId: text().notNull(),
     providerId: text().notNull(),
-    userId: text()
+    userId: integer()
       .notNull()
       .references(() => user.id, { onDelete: "cascade" }),
     accessToken: text(),
@@ -72,7 +67,7 @@ export const account = snakeCase.table(
 export const verification = snakeCase.table(
   "verification",
   {
-    id: int().primaryKey({ autoIncrement: true }),
+    id: integer().primaryKey({ autoIncrement: true }),
     identifier: text().notNull(),
     value: text().notNull(),
     expiresAt: integer().notNull(),

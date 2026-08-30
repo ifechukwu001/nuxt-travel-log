@@ -3,7 +3,7 @@ CREATE TABLE `account` (
 	`issuer` text NOT NULL,
 	`account_id` text NOT NULL,
 	`provider_id` text NOT NULL,
-	`user_id` text NOT NULL,
+	`user_id` integer NOT NULL,
 	`access_token` text,
 	`refresh_token` text,
 	`id_token` text,
@@ -24,7 +24,7 @@ CREATE TABLE `session` (
 	`updated_at` integer NOT NULL,
 	`ip_address` text,
 	`user_agent` text,
-	`user_id` text NOT NULL,
+	`user_id` integer NOT NULL,
 	CONSTRAINT `fk_session_user_id_user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) ON DELETE CASCADE
 );
 --> statement-breakpoint
@@ -47,9 +47,47 @@ CREATE TABLE `verification` (
 	`updated_at` integer NOT NULL
 );
 --> statement-breakpoint
-ALTER TABLE `location` ADD `user_id` integer NOT NULL REFERENCES user(id);--> statement-breakpoint
-ALTER TABLE `locationLog` ADD `user_id` integer NOT NULL REFERENCES user(id);--> statement-breakpoint
-ALTER TABLE `locationLogImage` ADD `user_id` integer NOT NULL REFERENCES user(id);--> statement-breakpoint
+CREATE TABLE `location` (
+	`id` integer PRIMARY KEY AUTOINCREMENT,
+	`name` text NOT NULL,
+	`slug` text NOT NULL UNIQUE,
+	`description` text,
+	`lat` real NOT NULL,
+	`long` real NOT NULL,
+	`user_id` integer NOT NULL,
+	`created_at` integer NOT NULL,
+	`updated_at` integer NOT NULL,
+	CONSTRAINT `fk_location_user_id_user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `user`(`id`),
+	CONSTRAINT `location_name_user_id_unique` UNIQUE(`name`,`user_id`)
+);
+--> statement-breakpoint
+CREATE TABLE `locationLog` (
+	`id` integer PRIMARY KEY AUTOINCREMENT,
+	`name` text NOT NULL,
+	`description` text,
+	`started_at` integer NOT NULL,
+	`ended_at` integer NOT NULL,
+	`lat` real NOT NULL,
+	`long` real NOT NULL,
+	`location_id` integer NOT NULL,
+	`user_id` integer NOT NULL,
+	`created_at` integer NOT NULL,
+	`updated_at` integer NOT NULL,
+	CONSTRAINT `fk_locationLog_location_id_location_id_fk` FOREIGN KEY (`location_id`) REFERENCES `location`(`id`),
+	CONSTRAINT `fk_locationLog_user_id_user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `user`(`id`)
+);
+--> statement-breakpoint
+CREATE TABLE `locationLogImage` (
+	`id` integer PRIMARY KEY AUTOINCREMENT,
+	`key` text NOT NULL,
+	`location_log_id` integer NOT NULL,
+	`user_id` integer NOT NULL,
+	`created_at` integer NOT NULL,
+	`updated_at` integer NOT NULL,
+	CONSTRAINT `fk_locationLogImage_location_log_id_locationLog_id_fk` FOREIGN KEY (`location_log_id`) REFERENCES `locationLog`(`id`),
+	CONSTRAINT `fk_locationLogImage_user_id_user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `user`(`id`)
+);
+--> statement-breakpoint
 CREATE UNIQUE INDEX `account_issuer_accountId_uidx` ON `account` (`issuer`,`account_id`);--> statement-breakpoint
 CREATE INDEX `account_userId_idx` ON `account` (`user_id`);--> statement-breakpoint
 CREATE INDEX `session_userId_idx` ON `session` (`user_id`);--> statement-breakpoint
