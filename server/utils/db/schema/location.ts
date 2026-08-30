@@ -1,4 +1,5 @@
 import { int, real, snakeCase, text } from "drizzle-orm/sqlite-core";
+import { createInsertSchema } from "drizzle-orm/zod";
 import { user } from "./auth";
 
 export const location = snakeCase.table("location", {
@@ -12,3 +13,18 @@ export const location = snakeCase.table("location", {
   createdAt: int().notNull().$default(() => Date.now()),
   updatedAt: int().notNull().$default(() => Date.now()).$onUpdate(() => Date.now()),
 });
+
+export const InsertLocation = createInsertSchema(location, {
+  name: field => field.min(1).max(100),
+  description: field => field.max(1000),
+  lat: field => field.min(-90).max(90),
+  long: field => field.min(-180).max(180),
+}).omit(
+  {
+    id: true,
+    slug: true,
+    userId: true,
+    createdAt: true,
+    updatedAt: true,
+  },
+);

@@ -6,4 +6,5 @@ trustPolicyExclude:
 
 allowBuilds:
   esbuild: true
+  pnpm: true
   unrs-resolver: true
