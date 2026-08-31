@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 const authStore = useAuthStore();
 
-await callOnce("authInit", authStore.init, { mode: "navigation" });
+await callOnce("authInit", authStore.init);
 </script>
 
 <template>
