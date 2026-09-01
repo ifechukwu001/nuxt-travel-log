@@ -10,10 +10,6 @@ async function relativeFetch(url: string, opts?: Record<string, unknown>) {
   catch {}
   return useFetch(url, {
     ...opts,
-    // headers: {
-    //   ...((opts?.headers as Record<string, string>) ?? {}),
-    //   ...(import.meta.server ? useRequestHeaders(["cookie"]) : {}),
-    // },
   });
 };
 
