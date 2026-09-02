@@ -18,4 +18,13 @@ export const relations = defineRelations(schema, r => ({
       to: r.user.id,
     }),
   },
+  location: {
+    locationLogs: r.many.locationLog(),
+  },
+  locationLog: {
+    location: r.one.location({
+      from: r.locationLog.id,
+      to: r.location.id,
+    }),
+  },
 }));
