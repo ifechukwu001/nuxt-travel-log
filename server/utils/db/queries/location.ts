@@ -1,11 +1,22 @@
-import type { InsertLocation } from "../schema";
+import type { InsertLocation } from "~~/server/utils/db/schema";
 
 import { customAlphabet } from "nanoid";
 
-import { location } from "../schema";
+import { location } from "~~/server/utils/db/schema";
 
 const nanoid = customAlphabet("1234567890abcdefghijklmnopqrstuvwxyz", 5);
 
+export async function findLocation(slug: string, userId: number) {
+  return db.query.location.findFirst({
+    where: {
+      slug,
+      userId,
+    },
+    with: {
+      locationLogs: true,
+    },
+  });
+}
 export async function findLocations(userId: number) {
   return db.query.location.findMany({
     where: {

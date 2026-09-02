@@ -33,3 +33,4 @@ export const InsertLocation = createInsertSchema(location, {
 );
 
 export type InsertLocation = z.infer<typeof InsertLocation>;
+export type SelectLocation = typeof location.$inferSelect;

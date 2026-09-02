@@ -2,11 +2,9 @@ import type { DrizzleQueryError } from "drizzle-orm";
 
 import slugify from "slug";
 
-import { InsertLocation } from "~~/server/utils/db/schema";
+import { findLocationByName, findUniqueSlug, insertLocation } from "~~/server/utils/db/queries/location";
 
-import { findLocationByName, findUniqueSlug, insertLocation } from "../utils/db/queries/location";
-import defineAuthenticatedEventHandler from "../utils/define-authenticated-event-handler";
-import sendZodError from "../utils/send-zod-error";
+import { InsertLocation } from "~~/server/utils/db/schema";
 
 export default defineAuthenticatedEventHandler(async (event) => {
   const result = await readValidatedBody(event, InsertLocation.safeParse);

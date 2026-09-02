@@ -1,7 +1,3 @@
-import type { NominatimResult } from "~~/shared/types";
-import { SearchSchema } from "#shared/utils/zod-schemas";
-import sendZodError from "../utils/send-zod-error";
-
 export default defineAuthenticatedEventHandler(
   defineCachedEventHandler(async (event) => {
     const result = await getValidatedQuery(event, SearchSchema.safeParse);
