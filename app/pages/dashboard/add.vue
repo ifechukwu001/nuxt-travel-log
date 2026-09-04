@@ -63,7 +63,7 @@ function searchResultSelected(result: NominatimResult) {
   };
 }
 
-watchEffect(() => {
+effect(() => {
   if (mapStore.addedPoint) {
     setFieldValue("long", mapStore.addedPoint.long);
     setFieldValue("lat", mapStore.addedPoint.lat);

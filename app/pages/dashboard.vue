@@ -5,10 +5,51 @@ const locationStore = useLocationStore();
 const sidebarStore = useSidebarStore();
 const mapStore = useMapStore();
 
+const { currentLocation } = storeToRefs(locationStore);
+
+effect(() => {
+  if (route.name === "dashboard") {
+    sidebarStore.sidebarTopItems = [{
+      id: "link-dashboard",
+      label: "Locations",
+      href: "/dashboard",
+      icon: "tabler:map",
+    }, {
+      id: "link-location-add",
+      label: "Add Location",
+      href: "/dashboard/add",
+      icon: "tabler:circle-plus-filled",
+    }];
+  }
+  else if (route.name === "dashboard-location-slug") {
+    sidebarStore.sidebarTopItems = [{
+      id: "link-back-dashboard",
+      label: "Back to Locations",
+      href: "/dashboard",
+      icon: "tabler:arrow-left",
+    }, {
+      id: "link-location-view",
+      label: currentLocation.value ? currentLocation.value.name : "View Logs",
+      to: { name: "dashboard-location-slug", params: { slug: currentLocation.value?.slug } },
+      icon: "tabler:map",
+    }, {
+      id: "link-location-edit",
+      label: "Edit Location",
+      to: { name: "dashboard-location-slug-edit", params: { slug: currentLocation.value?.slug } },
+      icon: "tabler:map-pin-cog",
+    }, {
+      id: "link-location-add-log",
+      label: "Add Location Log",
+      to: { name: "dashboard-location-slug-add", params: { slug: currentLocation.value?.slug } },
+      icon: "tabler:circle-plus-filled",
+    }];
+  }
+});
+
 onMounted(() => {
   isSidebarOpen.value = localStorage.getItem("isSidebarOpen") === "true";
   if (route.path !== "/dashboard") {
-    locationStore.refresh();
+    locationStore.refreshLocations();
   }
 });
 
@@ -35,33 +76,31 @@ function toggleSidebar() {
       </div>
       <div class="flex flex-col">
         <SidebarBtn
-          label="Location"
-          icon="tabler:map"
-          href="/dashboard"
+          v-for="item in sidebarStore.sidebarTopItems"
+          :key="item.id"
+          :label="item.label"
+          :icon="item.icon"
+          :href="item.href"
+          :to="item.to"
           :show-label="isSidebarOpen"
         />
-        <SidebarBtn
-          label="Add Location"
-          icon="tabler:circle-plus-filled"
-          href="/dashboard/add"
-          :show-label="isSidebarOpen"
-        />
-        <div v-if="sidebarStore.sidebarItems.length || sidebarStore.loading" class="divider" />
+        <div v-if="sidebarStore.loading || sidebarStore.sidebarItems.length" class="divider" />
         <div v-if="sidebarStore.loading" class="px-4">
           <div class="skeleton h-4 w-full" />
         </div>
-        <SidebarBtn
-          v-for="item in sidebarStore.sidebarItems"
-          v-else-if="sidebarStore.sidebarItems.length"
-          :key="item.id"
-          :show-label="isSidebarOpen"
-          :label="item.label"
-          :icon="item.icon"
-          :to="item.to"
-          :icon-color="isPointSelected(item.mapPoint, mapStore.selectedPoint) ? 'text-accent' : undefined"
-          @mouseenter="mapStore.selectedPoint = item.mapPoint ?? null"
-          @mouseleave="mapStore.selectedPoint = null"
-        />
+        <div v-if="!sidebarStore.loading && sidebarStore.sidebarItems.length" class="flex flex-col">
+          <SidebarBtn
+            v-for="item in sidebarStore.sidebarItems"
+            :key="item.id"
+            :show-label="isSidebarOpen"
+            :label="item.label"
+            :icon="item.icon"
+            :to="item.to"
+            :icon-color="isPointSelected(item.mapPoint, mapStore.selectedPoint) ? 'text-accent' : undefined"
+            @mouseenter="mapStore.selectedPoint = item.mapPoint ?? null"
+            @mouseleave="mapStore.selectedPoint = null"
+          />
+        </div>
         <div
           class="divider"
         />

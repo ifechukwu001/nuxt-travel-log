@@ -15,3 +15,5 @@ export const locationLog = snakeCase.table("locationLog", {
   createdAt: integer().notNull().$default(() => Date.now()),
   updatedAt: integer().notNull().$default(() => Date.now()).$onUpdate(() => Date.now()),
 });
+
+export type SelectLocationLog = typeof locationLog.$inferSelect;
