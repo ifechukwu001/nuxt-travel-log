@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 const mapStore = useMapStore();
 const locationStore = useLocationStore();
-const { locations, status } = storeToRefs(locationStore);
+const { locations, locationsStatus: status } = storeToRefs(locationStore);
 
 onMounted(() => {
-  locationStore.refresh();
+  locationStore.refreshLocations();
 });
 </script>
 
@@ -24,7 +24,7 @@ onMounted(() => {
         class="card bg-base-300 h-40 w-72 border-2 shrink-0 mb-2 hover:cursor-pointer"
         :class="{
           'border-accent': isPointSelected(location, mapStore.selectedPoint),
-          'border-transparent': isPointSelected(location, mapStore.selectedPoint),
+          'border-transparent': !isPointSelected(location, mapStore.selectedPoint),
         }"
         @mouseenter="mapStore.selectedPoint = createMapPointFromLocation(location)"
         @mouseleave="mapStore.selectedPoint = null"

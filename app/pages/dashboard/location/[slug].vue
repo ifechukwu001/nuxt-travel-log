@@ -1,15 +1,10 @@
 <script lang="ts" setup>
-const route = useRoute();
-const mapStore = useMapStore();
-
-const { slug } = route.params;
-const { data: location, status, error } = useFetch(`/api/locations/${slug}`);
-
-watchEffect(() => {
-  if (location.value) {
-    mapStore.mapPoints = [location.value];
-  }
-});
+const locationStore = useLocationStore();
+const {
+  currentLocation: location,
+  currentLocationStatus: status,
+  currentLocationError: error,
+} = storeToRefs(locationStore);
 </script>
 
 <template>
