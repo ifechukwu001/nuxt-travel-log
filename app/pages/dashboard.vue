@@ -1,14 +1,24 @@
 <script lang="ts" setup>
+import { CURRENT_LOCATION_PAGES, EDIT_PAGES, LOCATION_PAGES } from "~~/shared/constants";
+
 const isSidebarOpen = ref(true);
 const route = useRoute();
 const locationStore = useLocationStore();
 const sidebarStore = useSidebarStore();
 const mapStore = useMapStore();
 
-const { currentLocation } = storeToRefs(locationStore);
+const { currentLocation, currentLocationStatus } = storeToRefs(locationStore);
+
+if (LOCATION_PAGES.has(route.name?.toString() ?? "")) {
+  await locationStore.refreshLocations();
+}
+
+if (CURRENT_LOCATION_PAGES.has(route.name?.toString() ?? "")) {
+  await locationStore.refreshCurrentLocation();
+}
 
 effect(() => {
-  if (route.name === "dashboard") {
+  if (LOCATION_PAGES.has(route.name?.toString() ?? "")) {
     sidebarStore.sidebarTopItems = [{
       id: "link-dashboard",
       label: "Locations",
@@ -21,36 +31,37 @@ effect(() => {
       icon: "tabler:circle-plus-filled",
     }];
   }
-  else if (route.name === "dashboard-location-slug") {
+  else if (CURRENT_LOCATION_PAGES.has(route.name?.toString() ?? "")) {
     sidebarStore.sidebarTopItems = [{
       id: "link-back-dashboard",
       label: "Back to Locations",
       href: "/dashboard",
       icon: "tabler:arrow-left",
-    }, {
-      id: "link-location-view",
-      label: currentLocation.value ? currentLocation.value.name : "View Logs",
-      to: { name: "dashboard-location-slug", params: { slug: currentLocation.value?.slug } },
-      icon: "tabler:map",
-    }, {
-      id: "link-location-edit",
-      label: "Edit Location",
-      to: { name: "dashboard-location-slug-edit", params: { slug: currentLocation.value?.slug } },
-      icon: "tabler:map-pin-cog",
-    }, {
-      id: "link-location-add-log",
-      label: "Add Location Log",
-      to: { name: "dashboard-location-slug-add", params: { slug: currentLocation.value?.slug } },
-      icon: "tabler:circle-plus-filled",
     }];
+
+    if (currentLocation.value && currentLocationStatus.value !== "pending") {
+      sidebarStore.sidebarTopItems.push({
+        id: "link-location-view",
+        label: currentLocation.value.name,
+        to: { name: "dashboard-location-slug", params: { slug: route.params.slug } },
+        icon: "tabler:map",
+      }, {
+        id: "link-location-edit",
+        label: "Edit Location",
+        to: { name: "dashboard-location-slug-edit", params: { slug: route.params.slug } },
+        icon: "tabler:map-pin-cog",
+      }, {
+        id: "link-location-add-log",
+        label: "Add Location Log",
+        to: { name: "dashboard-location-slug-add", params: { slug: route.params.slug } },
+        icon: "tabler:circle-plus-filled",
+      });
+    }
   }
 });
 
 onMounted(() => {
   isSidebarOpen.value = localStorage.getItem("isSidebarOpen") === "true";
-  if (route.path !== "/dashboard") {
-    locationStore.refreshLocations();
-  }
 });
 
 function toggleSidebar() {
@@ -84,6 +95,9 @@ function toggleSidebar() {
           :to="item.to"
           :show-label="isSidebarOpen"
         />
+        <div v-if="route.path.startsWith('/dashboard/location') && currentLocationStatus === 'pending'" class="flex items-center justify-center">
+          <div class="loading" />
+        </div>
         <div v-if="sidebarStore.loading || sidebarStore.sidebarItems.length" class="divider" />
         <div v-if="sidebarStore.loading" class="px-4">
           <div class="skeleton h-4 w-full" />
@@ -113,8 +127,13 @@ function toggleSidebar() {
       </div>
     </div>
     <div class="flex-1 overflow-auto bg-base-200">
-      <div class="flex size-full" :class="{ 'flex-col': route.path !== '/dashboard/add' }">
-        <NuxtPage />
+      <div class="flex size-full" :class="{ 'flex-col': !EDIT_PAGES.has(route.name?.toString() ?? '') }">
+        <NuxtPage
+          :class="{
+            'shrink-0': EDIT_PAGES.has(route.name?.toString() ?? ''),
+            'w-96': EDIT_PAGES.has(route.name?.toString() ?? ''),
+          }"
+        />
         <AppMap class="flex-1" />
       </div>
     </div>
