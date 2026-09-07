@@ -4,8 +4,6 @@ import slugify from "slug";
 
 import { findLocationByName, findUniqueSlug, insertLocation } from "~~/server/utils/db/queries/location";
 
-import { InsertLocation } from "~~/server/utils/db/schema";
-
 export default defineAuthenticatedEventHandler(async (event) => {
   const result = await readValidatedBody(event, InsertLocation.safeParse);
 

@@ -23,7 +23,7 @@ export const relations = defineRelations(schema, r => ({
   },
   locationLog: {
     location: r.one.location({
-      from: r.locationLog.id,
+      from: r.locationLog.locationId,
       to: r.location.id,
     }),
   },

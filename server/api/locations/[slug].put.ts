@@ -1,5 +1,5 @@
 import { findLocationByName, updateLocationBySlug } from "~~/server/utils/db/queries/location";
-import { InsertLocation } from "~~/server/utils/db/schema";
+import { InsertLocation } from "~~/server/utils/db/schema/location";
 
 export default defineAuthenticatedEventHandler(async (event) => {
   const slug = getRouterParam(event, "slug") as string;
