@@ -22,7 +22,7 @@ const route = useRoute();
     >
       <Icon :name="props.icon" size="24" :class="props.iconColor" />
       <Transition name="grow">
-        <span v-if="props.showLabel">{{ props.label }}</span>
+        <span v-if="props.showLabel" class="truncate">{{ props.label }}</span>
       </Transition>
     </NuxtLink>
   </div>

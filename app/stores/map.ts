@@ -1,5 +1,6 @@
 import type { LngLatBounds } from "maplibre-gl";
 import type { MapPoint } from "~~/shared/types";
+import { CENTRE_NIGERIA } from "~~/shared/constants";
 
 export const useMapStore = defineStore("useMapStore", () => {
   const mapPoints = ref<MapPoint[]>([]);
@@ -18,6 +19,10 @@ export const useMapStore = defineStore("useMapStore", () => {
     watchSyncEffect(() => {
       const firstPoint = mapPoints.value[0];
       if (!firstPoint) {
+        map.map?.flyTo({
+          center: CENTRE_NIGERIA,
+          zoom: 2,
+        });
         return;
       }
       bounds = mapPoints.value.reduce((bounds, point) => {
