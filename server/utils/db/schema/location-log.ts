@@ -1,7 +1,6 @@
 import type z from "zod";
 import { integer, real, snakeCase, text } from "drizzle-orm/sqlite-core";
 import { createInsertSchema } from "drizzle-orm/zod";
-import { DescriptionSchema, LatSchema, LongSchema, NameSchema } from "../../../../shared/utils/zod-schemas";
 import { user } from "./auth";
 import { location } from "./location";
 
