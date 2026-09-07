@@ -47,4 +47,33 @@ export const InsertLocationLog = createInsertSchema(locationLog, {
 });
 
 export type InsertLocationLog = z.infer<typeof InsertLocationLog>;
+export const InsertLocationLog = createInsertSchema(locationLog, {
+  name: NameSchema,
+  description: DescriptionSchema,
+  lat: LatSchema,
+  long: LongSchema,
+}).omit(
+  {
+    id: true,
+    userId: true,
+    locationId: true,
+    createdAt: true,
+    updatedAt: true,
+  },
+).superRefine((values, context) => {
+  if (values.startedAt > values.endedAt || values.endedAt < values.startedAt) {
+    context.addIssue({
+      code: "custom",
+      message: "Start date must be before End date",
+      path: ["startedAt"],
+    });
+    context.addIssue({
+      code: "custom",
+      message: "End date must be after Start date",
+      path: ["endedAt"],
+    });
+  }
+});
+
+export type InsertLocationLog = z.infer<typeof InsertLocationLog>;
 export type SelectLocationLog = typeof locationLog.$inferSelect;

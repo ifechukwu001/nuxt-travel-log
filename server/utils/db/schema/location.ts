@@ -2,6 +2,7 @@ import type z from "zod";
 import type { SelectLocationLog } from "./location-log";
 import { integer, real, snakeCase, text, unique } from "drizzle-orm/sqlite-core";
 import { createInsertSchema } from "drizzle-orm/zod";
+import { DescriptionSchema, LatSchema, LongSchema, NameSchema } from "../../../../shared/utils/zod-schemas";
 import { user } from "./auth";
 
 export const location = snakeCase.table("location", {
