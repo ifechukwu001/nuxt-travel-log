@@ -16,14 +16,6 @@ function dateChanged(event: Event) {
   const target = event.target as HTMLInputElement;
   handleChange(new Date(target.value).getTime());
 }
-
-function formatDate(value: number) {
-  const date = new Date(value);
-  const year = date.getFullYear();
-  const month = (date.getMonth() + 1).toString().padStart(2, "0");
-  const day = date.getDate().toString().padStart(2, "0");
-  return `${year}-${month}-${day}`;
-}
 </script>
 
 <template>

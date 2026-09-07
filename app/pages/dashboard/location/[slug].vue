@@ -50,7 +50,7 @@ onBeforeRouteUpdate((to) => {
 </script>
 
 <template>
-  <div class="p-4 min-h-64">
+  <div class="page-content-top">
     <div v-if="loading">
       <span class="loading" />
     </div>
@@ -97,12 +97,32 @@ onBeforeRouteUpdate((to) => {
           <Icon name="tabler:map-pin-plus" size="24" />
         </NuxtLink>
       </div>
+      <div
+        v-else-if="route.name === 'dashboard-location-slug' && location.locationLogs.length"
+        class="location-list"
+      >
+        <LocationCard
+          v-for="log in location.locationLogs"
+          :key="log.id"
+          :map-point="createMapPointFromLocationLog(log)"
+        >
+          <template #top>
+            <p class="text-sm italic text-gray-500">
+              <span v-if="log.startedAt !== log.endedAt">
+                {{ formatDate(log.startedAt) }} / {{ formatDate(log.endedAt) }}
+              </span>
+              <span v-else>
+                {{ formatDate(log.startedAt) }}
+              </span>
+            </p>
+          </template>
+        </LocationCard>
+      </div>
     </div>
     <div v-if="route.name !== 'dashboard-location-slug'">
       <NuxtPage />
     </div>
     <AppDialog
-
       title="Are you sure?"
       description="Deleting this location will also delete all of the associated logs. This cannot be undone. Do you really want to do this?"
       confirm-label="Yes, delete this location"

@@ -9,6 +9,14 @@
   @apply px-2;
 }
 
+.page-content-top {
+  @apply p-4 min-h-72;
+}
+
+.location-list {
+  @apply flex flex-nowrap mt-4 gap-2 overflow-auto;
+}
+
 html[data-theme="dark"] {
   .maplibregl-popup-content {
     @apply text-white bg-gray-800;
