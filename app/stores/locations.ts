@@ -1,5 +1,5 @@
 import type { SelectLocationWithLogs } from "~~/server/utils/db/schema";
-import { CURRENT_LOCATION_PAGES, LOCATION_PAGES } from "~~/shared/constants";
+import { CURRENT_LOCATION_LOG_PAGES, CURRENT_LOCATION_PAGES, LOCATION_PAGES } from "~~/shared/constants";
 
 export const useLocationStore = defineStore("useLocationStore", () => {
   const route = useRoute();
@@ -11,6 +11,7 @@ export const useLocationStore = defineStore("useLocationStore", () => {
   } = useFetch("/api/locations");
 
   const locationUrlWithSlug = computed(() => `/api/locations/${route.params.slug}`);
+  const locationLogUrlWithSlugAndId = computed(() => `/api/locations/${route.params.slug}/${route.params.id}`);
 
   const {
     data: currentLocation,
@@ -25,6 +26,21 @@ export const useLocationStore = defineStore("useLocationStore", () => {
   watch(locationUrlWithSlug, (url) => {
     if (!url.endsWith("undefined"))
       refreshCurrentLocation();
+  }, { immediate: true });
+
+  const {
+    data: currentLocationLog,
+    status: currentLocationLogStatus,
+    error: currentLocationLogError,
+    refresh: refreshCurrentLocationLog,
+  } = useFetch<SelectLocationLog>(locationLogUrlWithSlugAndId, {
+    immediate: false,
+    watch: false,
+  });
+
+  watch(locationLogUrlWithSlugAndId, (url) => {
+    if (!url.endsWith("undefined"))
+      refreshCurrentLocationLog();
   }, { immediate: true });
 
   const sidebarStore = useSidebarStore();
@@ -76,6 +92,10 @@ export const useLocationStore = defineStore("useLocationStore", () => {
         mapStore.mapPoints = [currentLocation.value];
       }
     }
+    else if (currentLocationLog.value && CURRENT_LOCATION_LOG_PAGES.has(route.name?.toString() ?? "")) {
+      mapStore.mapPoints = [currentLocationLog.value];
+      sidebarStore.sidebarItems = [];
+    }
     sidebarStore.loading = locationsStatus.value === "pending" || currentLocationStatus.value === "pending";
     if (sidebarStore.loading) {
       mapStore.mapPoints = [];
@@ -91,5 +111,9 @@ export const useLocationStore = defineStore("useLocationStore", () => {
     currentLocationStatus,
     currentLocationError,
     refreshCurrentLocation,
+    currentLocationLog,
+    currentLocationLogStatus,
+    currentLocationLogError,
+    refreshCurrentLocationLog,
   };
 });
