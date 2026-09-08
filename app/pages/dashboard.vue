@@ -63,19 +63,22 @@ effect(() => {
     }
   }
   else if (CURRENT_LOCATION_LOG_PAGES.has(route.name?.toString() ?? "")) {
-    // sidebarStore.sidebarTopItems = [{
-    //   id: "link-back-location",
-    //   label: "Back to Location",
-    //   to: { name: "dashboard-location-slug", params: { slug: route.params.slug } },
-    //   icon: "tabler:arrow-left",
-    // }];
-
     if (currentLocation.value && currentLocationStatus.value !== "pending") {
       sidebarStore.sidebarTopItems = [{
         id: "link-location",
         label: `Back to ${currentLocation.value.name}`,
         to: { name: "dashboard-location-slug", params: { slug: route.params.slug } },
         icon: "tabler:arrow-left",
+      }, {
+        id: "link-view-location-log",
+        label: "View Log",
+        to: { name: "dashboard-location-slug-id", params: { slug: route.params.slug, id: route.params.id } },
+        icon: "tabler:map-pin",
+      }, {
+        id: "link-edit-location-log",
+        label: "Edit Log",
+        to: { name: "dashboard-location-slug-id-edit", params: { slug: route.params.slug, id: route.params.id } },
+        icon: "tabler:map-pin-cog",
       }];
     }
   }

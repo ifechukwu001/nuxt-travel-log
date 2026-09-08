@@ -9,6 +9,11 @@ const {
 
 const loading = computed(() => status.value === "pending");
 const errorMessage = computed(() => error.value?.statusText);
+
+onBeforeRouteUpdate((to) => {
+  if (to.name === "dashboard-location-slug-id")
+    locationStore.refreshCurrentLocationLog();
+});
 </script>
 
 <template>
@@ -36,6 +41,9 @@ const errorMessage = computed(() => error.value?.statusText);
       <p class="text-sm">
         {{ locationLog.description }}
       </p>
+    </div>
+    <div v-else>
+      <NuxtPage />
     </div>
   </div>
 </template>
