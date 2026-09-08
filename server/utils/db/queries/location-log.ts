@@ -32,3 +32,14 @@ export async function updateLocationLog(locationLogId: number, updateable: Inser
 
   return updated;
 };
+
+export async function deleteLocationLog(id: number, userId: number) {
+  const [deleted] = await db.delete(locationLog).where(
+    and(
+      eq(locationLog.id, id),
+      eq(locationLog.userId, userId),
+    ),
+  ).returning();
+
+  return deleted;
+}
