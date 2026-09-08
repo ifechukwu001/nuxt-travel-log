@@ -1,7 +1,7 @@
 {
   "version": "7",
   "dialect": "sqlite",
-  "id": "b6feb3bd-bdad-4300-a57c-58f0e5fee278",
+  "id": "286459e6-dbc2-4a47-84c8-9fb4cb781b88",
   "prevIds": [
     "00000000-0000-0000-0000-000000000000"
   ],
@@ -683,7 +683,7 @@
         "id"
       ],
       "onUpdate": "NO ACTION",
-      "onDelete": "NO ACTION",
+      "onDelete": "CASCADE",
       "nameExplicit": false,
       "name": "fk_location_user_id_user_id_fk",
       "entityType": "fks",
@@ -698,7 +698,7 @@
         "id"
       ],
       "onUpdate": "NO ACTION",
-      "onDelete": "NO ACTION",
+      "onDelete": "CASCADE",
       "nameExplicit": false,
       "name": "fk_locationLog_location_id_location_id_fk",
       "entityType": "fks",
@@ -713,7 +713,7 @@
         "id"
       ],
       "onUpdate": "NO ACTION",
-      "onDelete": "NO ACTION",
+      "onDelete": "CASCADE",
       "nameExplicit": false,
       "name": "fk_locationLog_user_id_user_id_fk",
       "entityType": "fks",
@@ -728,7 +728,7 @@
         "id"
       ],
       "onUpdate": "NO ACTION",
-      "onDelete": "NO ACTION",
+      "onDelete": "CASCADE",
       "nameExplicit": false,
       "name": "fk_locationLogImage_location_log_id_locationLog_id_fk",
       "entityType": "fks",
@@ -743,7 +743,7 @@
         "id"
       ],
       "onUpdate": "NO ACTION",
-      "onDelete": "NO ACTION",
+      "onDelete": "CASCADE",
       "nameExplicit": false,
       "name": "fk_locationLogImage_user_id_user_id_fk",
       "entityType": "fks",

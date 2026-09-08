@@ -12,7 +12,7 @@ export const location = snakeCase.table("location", {
   description: text(),
   lat: real().notNull(),
   long: real().notNull(),
-  userId: integer().notNull().references(() => user.id),
+  userId: integer().notNull().references(() => user.id, { onDelete: "cascade" }),
   createdAt: integer().notNull().$default(() => Date.now()),
   updatedAt: integer().notNull().$default(() => Date.now()).$onUpdate(() => Date.now()),
 }, t => [

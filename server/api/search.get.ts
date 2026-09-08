@@ -11,20 +11,20 @@ export default defineAuthenticatedEventHandler(
         headers: { "User-Agent": "nuxt-travel-log | ife@ifedevs.fyi" },
       });
       if (!response.ok) {
-        return sendError(event, createError({
+        throw createError({
           statusCode: 504,
           statusMessage: "Unable to reach search API.",
-        }));
+        });
       }
 
       const results = await response.json() as NominatimResult[];
       return results;
     }
     catch {
-      return sendError(event, createError({
+      createError({
         statusCode: 504,
         statusMessage: "Unable to reach search API.",
-      }));
+      });
     }
   }, {
     maxAge: 60 * 60 * 24,

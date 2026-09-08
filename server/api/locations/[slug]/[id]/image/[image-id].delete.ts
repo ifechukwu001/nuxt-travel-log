@@ -5,10 +5,10 @@ export default defineAuthenticatedEventHandler(async (event) => {
   const { slug, id, "image-id": imageId } = getRouterParams(event);
 
   if (!z.coerce.number().safeParse(imageId).success) {
-    return sendError(event, createError({
+    throw createError({
       statusCode: 422,
       statusMessage: "Invalid image id",
-    }));
+    });
   }
 
   await event.$fetch(`/api/locations/${slug}/${id}`);

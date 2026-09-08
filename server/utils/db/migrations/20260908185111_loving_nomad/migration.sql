@@ -57,7 +57,7 @@ CREATE TABLE `location` (
 	`user_id` integer NOT NULL,
 	`created_at` integer NOT NULL,
 	`updated_at` integer NOT NULL,
-	CONSTRAINT `fk_location_user_id_user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `user`(`id`),
+	CONSTRAINT `fk_location_user_id_user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) ON DELETE CASCADE,
 	CONSTRAINT `location_name_user_id_unique` UNIQUE(`name`,`user_id`)
 );
 --> statement-breakpoint
@@ -73,8 +73,8 @@ CREATE TABLE `locationLog` (
 	`user_id` integer NOT NULL,
 	`created_at` integer NOT NULL,
 	`updated_at` integer NOT NULL,
-	CONSTRAINT `fk_locationLog_location_id_location_id_fk` FOREIGN KEY (`location_id`) REFERENCES `location`(`id`),
-	CONSTRAINT `fk_locationLog_user_id_user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `user`(`id`)
+	CONSTRAINT `fk_locationLog_location_id_location_id_fk` FOREIGN KEY (`location_id`) REFERENCES `location`(`id`) ON DELETE CASCADE,
+	CONSTRAINT `fk_locationLog_user_id_user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) ON DELETE CASCADE
 );
 --> statement-breakpoint
 CREATE TABLE `locationLogImage` (
@@ -84,8 +84,8 @@ CREATE TABLE `locationLogImage` (
 	`user_id` integer NOT NULL,
 	`created_at` integer NOT NULL,
 	`updated_at` integer NOT NULL,
-	CONSTRAINT `fk_locationLogImage_location_log_id_locationLog_id_fk` FOREIGN KEY (`location_log_id`) REFERENCES `locationLog`(`id`),
-	CONSTRAINT `fk_locationLogImage_user_id_user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `user`(`id`)
+	CONSTRAINT `fk_locationLogImage_location_log_id_locationLog_id_fk` FOREIGN KEY (`location_log_id`) REFERENCES `locationLog`(`id`) ON DELETE CASCADE,
+	CONSTRAINT `fk_locationLogImage_user_id_user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) ON DELETE CASCADE
 );
 --> statement-breakpoint
 CREATE UNIQUE INDEX `account_issuer_accountId_uidx` ON `account` (`issuer`,`account_id`);--> statement-breakpoint

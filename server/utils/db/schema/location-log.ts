@@ -13,8 +13,8 @@ export const locationLog = snakeCase.table("locationLog", {
   endedAt: integer().notNull(),
   lat: real().notNull(),
   long: real().notNull(),
-  locationId: integer().notNull().references(() => location.id),
-  userId: integer().notNull().references(() => user.id),
+  locationId: integer().notNull().references(() => location.id, { onDelete: "cascade" }),
+  userId: integer().notNull().references(() => user.id, { onDelete: "cascade" }),
   createdAt: integer().notNull().$default(() => Date.now()),
   updatedAt: integer().notNull().$default(() => Date.now()).$onUpdate(() => Date.now()),
 });
