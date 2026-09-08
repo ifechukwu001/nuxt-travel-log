@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { InsertLocation } from "~~/server/utils/db/schema/location";
+import type { InsertLocation } from "~~/server/utils/db/schema";
 
 const route = useRoute();
 const { $csrfFetch } = useNuxtApp();

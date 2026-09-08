@@ -15,6 +15,7 @@ const EnvSchema = z.object(
     S3_ACCESS_SECRET: z.string(),
     S3_REGION: z.string(),
     S3_BUCKET: z.string(),
+    S3_BUCKET_URL: z.string(),
   },
 );
 

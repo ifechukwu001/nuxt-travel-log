@@ -26,5 +26,12 @@ export const relations = defineRelations(schema, r => ({
       from: r.locationLog.locationId,
       to: r.location.id,
     }),
+    images: r.many.locationLogImage(),
+  },
+  locationLogImage: {
+    locationLog: r.one.locationLog({
+      from: r.locationLogImage.locationLogId,
+      to: r.locationLog.id,
+    }),
   },
 }));

@@ -1,4 +1,4 @@
-import type { InsertLocationLog } from "~~/server/utils/db/schema/location-log";
+import type { InsertLocationLog } from "~~/server/utils/db/schema";
 import { and, eq } from "drizzle-orm";
 
 export async function findLocationLog(id: number, userId: number) {
@@ -6,6 +6,13 @@ export async function findLocationLog(id: number, userId: number) {
     where: {
       id,
       userId,
+    },
+    with: {
+      images: {
+        orderBy(fields, operators) {
+          return operators.desc(fields.createdAt);
+        },
+      },
     },
   });
 

@@ -1,6 +1,6 @@
 import tailwindcss from "@tailwindcss/vite";
 
-import "./server/utils/env";
+import env from "./server/utils/env";
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -44,5 +44,10 @@ export default defineNuxtConfig({
   },
   colorMode: {
     dataValue: "theme",
+  },
+  runtimeConfig: {
+    public: {
+      s3BucketUrl: env.S3_BUCKET_URL,
+    },
   },
 });

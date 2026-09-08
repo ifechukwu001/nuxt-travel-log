@@ -1,4 +1,4 @@
-import type { SelectLocationWithLogs } from "~~/server/utils/db/schema";
+import type { SelectLocationLogWithimages, SelectLocationWithLogs } from "~~/server/utils/db/schema";
 import { CURRENT_LOCATION_LOG_PAGES, CURRENT_LOCATION_PAGES, LOCATION_PAGES } from "~~/shared/constants";
 
 export const useLocationStore = defineStore("useLocationStore", () => {
@@ -33,7 +33,7 @@ export const useLocationStore = defineStore("useLocationStore", () => {
     status: currentLocationLogStatus,
     error: currentLocationLogError,
     refresh: refreshCurrentLocationLog,
-  } = useFetch<SelectLocationLog>(locationLogUrlWithSlugAndId, {
+  } = useFetch<SelectLocationLogWithimages>(locationLogUrlWithSlugAndId, {
     immediate: false,
     watch: false,
   });
